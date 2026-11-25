@@ -110,6 +110,7 @@ def _(data):
     train_data = data.sample(frac=0.8)
     test_data = data.drop(train_data.index)
     y_train = train_data['Depression']
+    y_train = y_train[:-1]
     y_test = test_data['Depression']
     train_data = train_data.drop('Depression', axis=1)
     test_data = test_data.drop('Depression', axis=1)
@@ -297,7 +298,7 @@ def _(batch_size, torch):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # Learning initialization
+    # Training initialization
     """)
     return
 
@@ -323,12 +324,12 @@ def _(
         train_history.append(train_loop(loader_train, model, loss_fn, optimizer))
         test_loss, test_accuracy = test_loop(loader_test, model, loss_fn)
         test_history.append((test_loss, test_accuracy))
-    
+
         delta = test_accuracy - best_accuracy
         print(f'Accuracy delta = {delta}')
         if delta < 0.1:
             counter += 1
-       
+   
             if counter == patience:
                 print('Early stopping interupted')
                 logs.append(f'Early stopping interupted after epoch {e+1}')
@@ -370,6 +371,7 @@ def _(np, plt, test_history, train_history):
     ax_test.set_title('Test history')
 
     plt.tight_layout()
+    plt.savefig('weight_decay.png')
     plt.show()
     return
 
