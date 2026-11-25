@@ -1,0 +1,9 @@
+venv/
+.idea/
+cmake-build-debug/
+__pycache__/
+out/
+target/
+build/
+.gradle/
+__marimo__
